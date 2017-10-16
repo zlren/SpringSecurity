@@ -5,6 +5,9 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lab.zlren.dto.User;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +22,24 @@ import java.util.List;
 @RequestMapping("user")
 @Slf4j
 public class UserController {
+
+    /**
+     * 拿到当前用户信息
+     *
+     * @return
+     */
+    @GetMapping("me")
+    public Object getCurrentUser(Authentication authentication) {
+        // SecurityContextHolder.getContext().getAuthentication(); 这句话可以拿到当前用户
+        // 简单的方法就是直接在方法参数里面增加Authentication参数，它就是
+        return authentication;
+    }
+
+    @GetMapping("detail")
+    public Object getCurrentUser(@AuthenticationPrincipal UserDetails userDetail) {
+        // 这里只拿到了authentication里面的userdetail部分
+        return userDetail;
+    }
 
     /**
      * 查询用户列表
