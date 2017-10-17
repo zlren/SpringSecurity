@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.async.DeferredResult;
 
 /**
- * Created by zlren on 17/10/13.
+ * @author zlren
+ * @date 17/10/13
  */
 @RestController
 @RequestMapping("async")

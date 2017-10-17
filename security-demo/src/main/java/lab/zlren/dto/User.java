@@ -10,7 +10,8 @@ import org.hibernate.validator.constraints.NotBlank;
 import java.util.Date;
 
 /**
- * Created by zlren on 17/10/11.
+ * @author zlren
+ * @date 17/10/11
  */
 @Data
 @Accessors(chain = true)

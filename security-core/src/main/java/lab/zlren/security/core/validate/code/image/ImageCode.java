@@ -1,33 +1,31 @@
-package lab.zlren.security.core.validate.code;
+package lab.zlren.security.core.validate.code.image;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lab.zlren.security.core.validate.code.ValidateCode;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.awt.image.BufferedImage;
 import java.time.LocalDateTime;
 
 /**
- * Created by zlren on 17/10/15.
+ * 图片验证码封装类
+ *
+ * @author zlren
+ * @date 17/10/15
  */
-@Data
-@AllArgsConstructor
-public class ImageCode {
-    private BufferedImage image;
-    private String code;
-    private LocalDateTime expireTime; // 过期的时间点
+public class ImageCode extends ValidateCode {
 
-    /**
-     * @param image
-     * @param code
-     * @param expireIn 过期时间段，单位秒
-     */
-    public ImageCode(BufferedImage image, String code, int expireIn) {
+    @Getter
+    @Setter
+    private BufferedImage image;
+
+    public ImageCode(BufferedImage image, String code, LocalDateTime expireTime) {
+        super(code, expireTime);
         this.image = image;
-        this.code = code;
-        this.expireTime = LocalDateTime.now().plusSeconds(expireIn);
     }
 
-    public boolean isExpired() {
-        return LocalDateTime.now().isAfter(expireTime);
+    public ImageCode(BufferedImage image, String code, int expireIn) {
+        super(code, expireIn);
+        this.image = image;
     }
 }

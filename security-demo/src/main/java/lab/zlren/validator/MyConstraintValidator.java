@@ -8,12 +8,15 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 /**
- * Created by zlren on 17/10/12.
+ * @author zlren
+ * @date 17/10/12
  */
 @Slf4j
 public class MyConstraintValidator implements ConstraintValidator<MyConstraint, String> {
 
-    // 这里可以注入组件完成校验逻辑
+    /**
+     * 这里可以注入组件完成校验逻辑
+     */
     @Autowired
     private HelloService helloService;
 

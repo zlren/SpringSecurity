@@ -1,33 +1,23 @@
-package lab.zlren.security.core.validate.code;
+package lab.zlren.security.core.validate.code.sms;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lab.zlren.security.core.validate.code.ValidateCode;
 
-import java.awt.image.BufferedImage;
 import java.time.LocalDateTime;
 
 /**
- * Created by zlren on 17/10/15.
+ * 短信验证码封装类
+ *
+ * @author zlren
+ * @date 17/10/15
  */
-@Data
-@AllArgsConstructor
-public class ImageCode {
-    private BufferedImage image;
-    private String code;
-    private LocalDateTime expireTime; // 过期的时间点
 
-    /**
-     * @param image
-     * @param code
-     * @param expireIn 过期时间段，单位秒
-     */
-    public ImageCode(BufferedImage image, String code, int expireIn) {
-        this.image = image;
-        this.code = code;
-        this.expireTime = LocalDateTime.now().plusSeconds(expireIn);
+public class SmsCode extends ValidateCode {
+
+    public SmsCode(String code, LocalDateTime expireTime) {
+        super(code, expireTime);
     }
 
-    public boolean isExpired() {
-        return LocalDateTime.now().isAfter(expireTime);
+    SmsCode(String code, int expireIn) {
+        super(code, expireIn);
     }
 }

@@ -20,14 +20,17 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by zlren on 17/10/15.
+ * @author zlren
+ * @date 17/10/15
  */
 @RestController
 @Slf4j
 public class BrowserSecurityController {
 
-    // 需要跳转是ss做的，它会跳到loginPage参数设置的地址，也就是下面这个controller方法，跳转过来的时候将相关的参数缓存到了这里
-    // 从这里可以从缓存中将被拦截的请求拿出来
+    /**
+     * 需要跳转是ss做的，它会跳到loginPage参数设置的地址，也就是下面这个controller方法，跳转过来的时候将相关的参数缓存到了这里
+     * 从这里可以从缓存中将被拦截的请求拿出来
+     */
     private RequestCache requestCache = new HttpSessionRequestCache();
 
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();

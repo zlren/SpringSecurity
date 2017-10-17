@@ -6,7 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.context.request.ServletWebRequest;
 
 /**
- * Created by zlren on 17/10/15.
+ * @author zlren
+ * @date 17/10/15
  */
 // @Component("imageCodeGenerator")
 @Slf4j

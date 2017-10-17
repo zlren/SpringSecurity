@@ -10,7 +10,8 @@ import java.io.IOException;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 
 /**
- * Created by zlren on 17/10/14.
+ * @author zlren
+ * @date 17/10/14
  */
 @Slf4j
 public class MockServer {

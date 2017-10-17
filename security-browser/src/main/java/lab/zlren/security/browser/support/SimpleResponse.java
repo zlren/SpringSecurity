@@ -4,7 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
- * Created by zlren on 17/10/15.
+ * 简单包装类，作为返回给前端的对象
+ *
+ * @author zlren
+ * @date 17/10/15
  */
 @Data
 @AllArgsConstructor

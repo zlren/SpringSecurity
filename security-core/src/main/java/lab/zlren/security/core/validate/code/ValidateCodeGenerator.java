@@ -1,11 +1,19 @@
-package lab.zlren.security.core.validate.code.generator;
+package lab.zlren.security.core.validate.code;
 
-import lab.zlren.security.core.validate.code.ImageCode;
 import org.springframework.web.context.request.ServletWebRequest;
 
 /**
  * 校验码生成器
+ *
+ * @author zlren
  */
 public interface ValidateCodeGenerator {
-    public ImageCode createImageCode(ServletWebRequest servletWebRequest);
+
+    /**
+     * 用户创建验证码，包括短信验证码和图形验证码
+     *
+     * @param servletWebRequest
+     * @return
+     */
+    ValidateCode create(ServletWebRequest servletWebRequest);
 }

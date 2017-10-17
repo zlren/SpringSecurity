@@ -11,7 +11,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by zlren on 17/10/12.
+ * @author zlren
+ * @date 17/10/12
  */
 @ControllerAdvice
 public class ControllerExceptionHandler {
@@ -23,7 +24,7 @@ public class ControllerExceptionHandler {
     public Map<String, Object> handleUserNotException(UserNotExistException ex) {
 
         // 返回的数据
-        Map<String, Object> result = new HashMap<>();
+        Map<String, Object> result = new HashMap<>(2);
         result.put("id", ex.getId());
         result.put("msg", ex.getMessage());
 

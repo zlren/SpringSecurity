@@ -5,10 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.*;
 import java.io.IOException;
-import java.util.Date;
 
 /**
- * Created by zlren on 17/10/12.
+ * @author zlren
+ * @date 17/10/12
  */
 @Slf4j
 // @Component // 拦截所有
@@ -25,9 +25,9 @@ public class TimeFilter implements Filter {
 
         log.info("time filter start");
 
-        long startTime = new Date().getTime();
+        long startTime = System.currentTimeMillis();
         filterChain.doFilter(servletRequest, servletResponse); // 这句话是去执行此次http请求对应的controller方法
-        long endTime = new Date().getTime();
+        long endTime = System.currentTimeMillis();
 
         log.info("cost: {}", endTime - startTime);
 

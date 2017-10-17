@@ -16,13 +16,14 @@ import java.io.IOException;
 
 /**
  * 自定义验证成功之后的逻辑
- * Created by zlren on 17/10/15.
+ * 理论上该去实现这个接口 implements AuthenticationSuccessHandler
+ * 我们继承的这个类是ss对上面接口的实现，错误那里也是同理
+ *
+ * @author zlren
+ * @date 17/10/15
  */
 @Component
 @Slf4j
-// 理论上该去实现这个接口 implements AuthenticationSuccessHandler
-// 我们继承的这个类是ss对上面接口的实现
-// 错误那里也是同理
 public class MyAuthSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 
     @Autowired

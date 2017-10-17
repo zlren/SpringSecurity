@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 
 /**
  * 模拟监听队列
+ *
+ * @author zlren
  */
 @Component
 @Slf4j
@@ -30,7 +32,8 @@ public class QueueListener implements ApplicationListener<ContextRefreshedEvent>
 
                     String orderNumber = mockQueue.getCompleteOrder();
                     log.info("返回订单处理结果:{}", orderNumber);
-                    deferredResultHolder.getMap().get(orderNumber).setResult("place order success"); // 这里的值会返回给前端
+                    // 这里的值会返回给前端
+                    deferredResultHolder.getMap().get(orderNumber).setResult("place order success");
                     mockQueue.setCompleteOrder(null);
 
                 } else {

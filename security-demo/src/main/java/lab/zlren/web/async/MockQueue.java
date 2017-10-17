@@ -8,7 +8,9 @@ import org.springframework.stereotype.Component;
  * 模拟消息队列
  * place模拟请求
  * complete模拟结果
- * Created by zlren on 17/10/13.
+ *
+ * @author zlren
+ * @date 17/10/13
  */
 @Data
 @Slf4j

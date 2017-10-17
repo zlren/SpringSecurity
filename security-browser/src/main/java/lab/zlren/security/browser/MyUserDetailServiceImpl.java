@@ -11,11 +11,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 /**
- * Created by zlren on 17/10/14.
+ * 自定义UserDetailService
+ *
+ * @author zlren
+ * @date 17/10/14
  */
 @Component
 @Slf4j
-public class MyUserDetailService implements UserDetailsService {
+public class MyUserDetailServiceImpl implements UserDetailsService {
 
     // 注入数据库操作类进行具体查询
     // @Autowired
@@ -33,7 +36,8 @@ public class MyUserDetailService implements UserDetailsService {
         // 这里的 User 是 SS 里面的，它已经实现了 UserDetails 接口，可以直接使用
         return new User(
                 username,
-                this.passwordEncoder.encode("123456"), // 这个动作应该是注册的时候做的，这里应该从数据库中直接读
+                // 这个动作应该是注册的时候做的，这里应该从数据库中直接读
+                this.passwordEncoder.encode("123456"),
                 true,
                 true,
                 true,

@@ -9,10 +9,10 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.util.Date;
 
 /**
- * Created by zlren on 17/10/13.
+ * @author zlren
+ * @date 17/10/13
  */
 @RestController
 @RequestMapping("file")
@@ -27,7 +27,7 @@ public class FileController {
         log.info(String.valueOf(file.getSize()));
 
         String folder = "/Users/zlren/Documents/work_space/security/security-demo/src/main/resources/upload";
-        File localFile = new File(folder, new Date().getTime() + ".txt");
+        File localFile = new File(folder, System.currentTimeMillis() + ".txt");
 
         file.transferTo(localFile);
 

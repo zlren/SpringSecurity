@@ -8,10 +8,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Date;
 
 /**
- * Created by zlren on 17/10/12.
+ * @author zlren
+ * @date 17/10/12
  */
 @Slf4j
 @Component
@@ -24,7 +24,7 @@ public class TimeInterceptor implements HandlerInterceptor {
         log.info("preHandle");
         log.info("类名 {}", ((HandlerMethod) o).getBean().getClass().getName());
         log.info("方法名 {}", ((HandlerMethod) o).getMethod().getName());
-        httpServletRequest.setAttribute("startTime", new Date().getTime());
+        httpServletRequest.setAttribute("startTime", System.currentTimeMillis());
 
         return true;
     }
@@ -34,7 +34,7 @@ public class TimeInterceptor implements HandlerInterceptor {
                            ModelAndView modelAndView) throws Exception {
 
         log.info("postHandle");
-        log.info("耗时：{}", new Date().getTime() - (long) httpServletRequest.getAttribute("startTime"));
+        log.info("耗时：{}", System.currentTimeMillis() - (long) httpServletRequest.getAttribute("startTime"));
     }
 
     @Override
@@ -43,7 +43,7 @@ public class TimeInterceptor implements HandlerInterceptor {
 
         log.info("afterCompletion");
         log.info("postHandle");
-        log.info("耗时：{}", new Date().getTime() - (long) httpServletRequest.getAttribute("startTime"));
+        log.info("耗时：{}", System.currentTimeMillis() - (long) httpServletRequest.getAttribute("startTime"));
 
         if (e != null) {
             log.info("异常是:{}", e.getMessage());

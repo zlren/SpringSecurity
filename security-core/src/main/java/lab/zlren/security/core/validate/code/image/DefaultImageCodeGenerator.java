@@ -1,6 +1,7 @@
-package lab.zlren.security.core.validate.code;
+package lab.zlren.security.core.validate.code.image;
 
 import lab.zlren.security.core.properties.SecurityProperties;
+import lab.zlren.security.core.validate.code.ValidateCodeGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.context.request.ServletWebRequest;
@@ -11,9 +12,11 @@ import java.util.Random;
 
 /**
  * 验证码生成器的默认实现
- * Created by zlren on 17/10/15.
+ * 这里不要加@Component，而要以@Bean的形式注入，结合@conditionmissingbean就可以支持覆盖
+ *
+ * @author zlren
+ * @date 17/10/15
  */
-// 这里不要加@Component，而要以@Bean的形式注入，结合@conditionmissingbean就可以支持覆盖
 public class DefaultImageCodeGenerator implements ValidateCodeGenerator {
 
     @Autowired
@@ -26,8 +29,10 @@ public class DefaultImageCodeGenerator implements ValidateCodeGenerator {
      * @return
      */
     @Override
-    public ImageCode createImageCode(ServletWebRequest servletWebRequest) {
-        int width = ServletRequestUtils.getIntParameter( // 从请求中取值，取不到就从配置中去取（用户配置优于默认配置）
+    public ImageCode create(ServletWebRequest servletWebRequest) {
+
+        // 从请求中取值，取不到就从配置中去取（用户配置优于默认配置）
+        int width = ServletRequestUtils.getIntParameter(
                 servletWebRequest.getRequest(),
                 "width",
                 securityProperties.getCode().getImage().getWidth());

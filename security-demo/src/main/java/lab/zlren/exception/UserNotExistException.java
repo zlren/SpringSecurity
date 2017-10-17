@@ -3,7 +3,8 @@ package lab.zlren.exception;
 import lombok.Data;
 
 /**
- * Created by zlren on 17/10/12.
+ * @author zlren
+ * @date 17/10/12
  */
 @Data
 public class UserNotExistException extends RuntimeException {

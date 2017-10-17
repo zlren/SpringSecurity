@@ -18,11 +18,13 @@ import java.io.IOException;
 
 /**
  * 验证失败以后的处理逻辑
- * Created by zlren on 17/10/15.
+ * implements AuthenticationFailureHandler
+ *
+ * @author zlren
+ * @date 17/10/15
  */
 @Component
 @Slf4j
-// implements AuthenticationFailureHandler
 public class MyAuthFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
     @Autowired
@@ -48,8 +50,9 @@ public class MyAuthFailureHandler extends SimpleUrlAuthenticationFailureHandler 
         if (LoginType.JSON.equals(this.securityProperties.getBrowser().getLoginType())) {
             httpServletResponse.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
             httpServletResponse.setContentType("application/json;charset=UTF-8");
+            // 只返回错误消息
             httpServletResponse.getWriter()
-                    .write(this.objectMapper.writeValueAsString(new SimpleResponse(e.getMessage()))); // 只返回错误消息
+                    .write(this.objectMapper.writeValueAsString(new SimpleResponse(e.getMessage())));
         } else {
             // 父类默认跳转
             super.onAuthenticationFailure(httpServletRequest, httpServletResponse, e);
