@@ -18,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.social.security.SpringSocialConfigurer;
 
 import javax.sql.DataSource;
 
@@ -63,6 +64,9 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private SmsCodeAuthSecurityConfig smsCodeAuthSecurityConfig;
+
+    @Autowired
+    private SpringSocialConfigurer mySpringSocialConfig;
 
     @Bean
     public PersistentTokenRepository persistentTokenRepository() {
@@ -126,6 +130,9 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().csrf().disable()
 
                 // 使关于短信验证码的配置生效
-                .apply(smsCodeAuthSecurityConfig);
+                .apply(smsCodeAuthSecurityConfig).and()
+
+                // 社交登录
+                .apply(mySpringSocialConfig);
     }
 }
