@@ -13,4 +13,5 @@ public class SmsCodeProperties {
 
     private int length = 6;
     private int expiredIn = 60;
+    private String url;
 }

@@ -1,14 +1,16 @@
 package lab.zlren.exception;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author zlren
  * @date 17/10/12
  */
-@Data
 public class UserNotExistException extends RuntimeException {
 
+    @Getter
+    @Setter
     private String id;
 
     public UserNotExistException(String id) {

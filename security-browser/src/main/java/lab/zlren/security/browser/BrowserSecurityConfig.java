@@ -2,6 +2,8 @@ package lab.zlren.security.browser;
 
 import lab.zlren.security.browser.auth.MyAuthFailureHandler;
 import lab.zlren.security.browser.auth.MyAuthSuccessHandler;
+import lab.zlren.security.core.auth.mobile.SmsCodeAuthSecurityConfig;
+import lab.zlren.security.core.auth.mobile.SmsCodeFilter;
 import lab.zlren.security.core.properties.SecurityProperties;
 import lab.zlren.security.core.validate.code.ValidateCodeFilter;
 import lombok.extern.slf4j.Slf4j;
@@ -59,6 +61,9 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsService userDetailsService;
 
+    @Autowired
+    private SmsCodeAuthSecurityConfig smsCodeAuthSecurityConfig;
+
     @Bean
     public PersistentTokenRepository persistentTokenRepository() {
         JdbcTokenRepositoryImpl jdbcTokenRepository = new JdbcTokenRepositoryImpl();
@@ -72,15 +77,25 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        // 验证码拦截器
+        // 图形验证码拦截器
         ValidateCodeFilter validateCodeFilter = new ValidateCodeFilter();
         validateCodeFilter.setAuthenticationFailureHandler(myAuthFailureHandler);
         validateCodeFilter.setSecurityProperties(securityProperties);
         // 调用它的初始化方法
         validateCodeFilter.afterPropertiesSet();
 
+
+        // 短信验证码拦截器
+        SmsCodeFilter smsCodeFilter = new SmsCodeFilter();
+        smsCodeFilter.setAuthenticationFailureHandler(myAuthFailureHandler);
+        smsCodeFilter.setSecurityProperties(securityProperties);
+        // 调用它的初始化方法
+        smsCodeFilter.afterPropertiesSet();
+
+
         // 配置在UPFilter前生效
-        http.addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
+        http.addFilterBefore(smsCodeFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
 
                 .formLogin()
                 // 这里是登录页面的url，如果需要验证就转到这里，但实际上为了区别html请求还是数据请求，这里我们指向的是一个controller
@@ -108,6 +123,9 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest()
                 .authenticated()
 
-                .and().csrf().disable();
+                .and().csrf().disable()
+
+                // 使关于短信验证码的配置生效
+                .apply(smsCodeAuthSecurityConfig);
     }
 }
