@@ -13,7 +13,7 @@ import org.springframework.web.client.RestTemplate;
  * @date 17/10/21
  */
 @Slf4j
-public class QQAuth2Template extends OAuth2Template {
+public class QQOAuth2Template extends OAuth2Template {
 
     /**
      * {@link org.springframework.social.oauth2.OAuth2Template#exchangeCredentialsForAccess}
@@ -23,10 +23,9 @@ public class QQAuth2Template extends OAuth2Template {
      * @param authorizeUrl
      * @param accessTokenUrl
      */
-    public QQAuth2Template(String clientId, String clientSecret, String authorizeUrl, String accessTokenUrl) {
+    public QQOAuth2Template(String clientId, String clientSecret, String authorizeUrl, String accessTokenUrl) {
         super(clientId, clientSecret, authorizeUrl, accessTokenUrl);
         // 当它为true才会带上client_id和client_secret参数
-        // exchangeCredentialsForAccess()
         setUseParametersForClientAuthentication(true);
     }
 

@@ -1,6 +1,7 @@
 package lab.zlren.security.browser;
 
 import lab.zlren.security.browser.support.SimpleResponse;
+import lab.zlren.security.browser.support.SocialUserInfo;
 import lab.zlren.security.core.properties.SecurityProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +11,14 @@ import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
+import org.springframework.social.connect.Connection;
+import org.springframework.social.connect.web.ProviderSignInUtils;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.ServletWebRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -37,6 +42,12 @@ public class BrowserSecurityController {
 
     @Autowired
     private SecurityProperties securityProperties;
+
+    /**
+     * 工具类
+     */
+    @Autowired
+    private ProviderSignInUtils providerSignInUtils;
 
     /**
      * 当需要身份认证时，跳转到这里
@@ -66,6 +77,40 @@ public class BrowserSecurityController {
 
         // 如果是数据请求，这里要返回json，这里简单包装一下SimpleResponse
         return new SimpleResponse("访问的服务需要身份认证，请引导用户到登录页");
+    }
+
+
+    /**
+     * 从SpringSocial中拿到用户的服务提供商的信息并封装然后返回
+     * providerSignInUtils 通过这个工具类去拿
+     *
+     * @param httpServletRequest
+     * @return
+     */
+    @GetMapping("/social/user")
+    public SocialUserInfo getSocialUserInfo(HttpServletRequest httpServletRequest) {
+
+        Connection<?> connectionFromSession = providerSignInUtils.getConnectionFromSession(new ServletWebRequest
+                (httpServletRequest));
+
+        return new SocialUserInfo()
+                .setProviderId(connectionFromSession.getKey().getProviderId())
+                .setProviderUserId(connectionFromSession.getKey().getProviderUserId())
+                .setNickname(connectionFromSession.getDisplayName())
+                .setHeadimg(connectionFromSession.getImageUrl());
+    }
+
+
+    /**
+     * session超时失效
+     *
+     * @return
+     */
+    @GetMapping("/session/invalid")
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public SimpleResponse sessionInvalid() {
+        String msg = "session超时失效";
+        return new SimpleResponse(msg);
     }
 
 }

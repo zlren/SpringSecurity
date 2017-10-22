@@ -8,10 +8,16 @@ import lombok.Data;
  */
 @Data
 public class BrowserProperties {
+
     /**
      * 默认登录页，用户自定义后会抹掉此配置
      */
     private String loginPage = "/sign_in.html";
+
+    /**
+     * 默认注册页，需要用户自定义
+     */
+    private String signUpUrl = "/sign_up.html";
 
     /**
      * 默认返回json

@@ -2,6 +2,7 @@ package lab.zlren.security.browser;
 
 import lab.zlren.security.browser.auth.MyAuthFailureHandler;
 import lab.zlren.security.browser.auth.MyAuthSuccessHandler;
+import lab.zlren.security.browser.session.MyExpiredSessionStrategy;
 import lab.zlren.security.core.auth.mobile.SmsCodeAuthSecurityConfig;
 import lab.zlren.security.core.auth.mobile.SmsCodeFilter;
 import lab.zlren.security.core.properties.SecurityProperties;
@@ -117,12 +118,25 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
                 .tokenValiditySeconds(securityProperties.getBrowser().getRememberMeSeconds())
                 .userDetailsService(userDetailsService)
 
+                // TODO 抽一个SessionProperties配置类
+                // session超时处理
+                .and().sessionManagement()
+                .invalidSessionUrl("/session/invalid")
+                // 并发控制
+                .maximumSessions(1)
+                // session数量达到最大的时候组织掉继续登录的行为
+                .maxSessionsPreventsLogin(true)
+                .expiredSessionStrategy(new MyExpiredSessionStrategy()).and()
+
                 .and().authorizeRequests()
                 // 登录页面其实指向了controller，如果ss需要验证就转到controller上，再由controller决定转到页面还是返回json
                 .antMatchers(
                         "/auth/require",
                         securityProperties.getBrowser().getLoginPage(),
-                        "/code/*"
+                        "/code/*",
+                        securityProperties.getBrowser().getSignUpUrl(),
+                        "/user/regist",
+                        "/session/invalid"
                 ).permitAll()
                 .anyRequest()
                 .authenticated()

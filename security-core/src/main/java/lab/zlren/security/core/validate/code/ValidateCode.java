@@ -3,6 +3,7 @@ package lab.zlren.security.core.validate.code;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -11,7 +12,7 @@ import java.time.LocalDateTime;
  */
 @Data
 @AllArgsConstructor
-public class ValidateCode {
+public class ValidateCode implements Serializable {
 
     private String code;
     /**

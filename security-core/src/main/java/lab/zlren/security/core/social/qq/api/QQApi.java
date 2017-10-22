@@ -59,7 +59,7 @@ public class QQApi extends AbstractOAuth2ApiBinding {
 
         // {"client_id": "YOUR_APPID", "openid": "YOUR_OPENID"}
         // 这样写只是快速的实现功能
-        this.openId = StringUtils.substringBetween(result, "\"openid\":", "}");
+        this.openId = StringUtils.substringBetween(result, "\"openid\":\"", "\"}");
 
         log.info("openid是 {}", openId);
     }
@@ -75,8 +75,14 @@ public class QQApi extends AbstractOAuth2ApiBinding {
         String url = String.format(URL_GET_USERINFO, appId, openId);
         String result = getRestTemplate().getForObject(url, String.class);
 
+        QQUserInfo qqUserInfo;
         try {
-            return objectMapper.readValue(result, QQUserInfo.class);
+
+            qqUserInfo = objectMapper.readValue(result, QQUserInfo.class);
+            qqUserInfo.setOpenId(openId);
+
+            return qqUserInfo;
+
         } catch (IOException e) {
             throw new RuntimeException("获取用户信息失败", e);
         }

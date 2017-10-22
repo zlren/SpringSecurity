@@ -19,6 +19,7 @@
             <version>${lab.zlren.security.version}</version>
         </dependency>
 
+        <!--session管理（一般是集群环境下）-->
         <dependency>
             <groupId>org.springframework.session</groupId>
             <artifactId>spring-session</artifactId>

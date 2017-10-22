@@ -3,7 +3,6 @@ package lab.zlren.security.core.social.qq.connect;
 import lab.zlren.security.core.social.qq.api.QQApi;
 import lombok.Setter;
 import org.springframework.social.oauth2.AbstractOAuth2ServiceProvider;
-import org.springframework.social.oauth2.OAuth2Template;
 
 /**
  * @author zlren
@@ -31,7 +30,9 @@ public class QQServiceProvider extends AbstractOAuth2ServiceProvider<QQApi> {
      */
     public QQServiceProvider(String appId, String appSecret) {
         // 这里的appId和appSecret是开发的这个应用在QQ上的标识id和密码，这样QQ才知道是我们这个应用在申请
-        super(new OAuth2Template(appId, appSecret, URL_AUTHORIZE, URL_ACCESS_TOKEN));
+        super(new QQOAuth2Template(appId, appSecret, URL_AUTHORIZE, URL_ACCESS_TOKEN));
+
+        this.appId = appId;
     }
 
     @Setter
