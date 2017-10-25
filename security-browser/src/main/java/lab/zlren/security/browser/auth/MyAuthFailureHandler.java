@@ -1,7 +1,7 @@
 package lab.zlren.security.browser.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lab.zlren.security.browser.support.SimpleResponse;
+import lab.zlren.security.core.support.SimpleResponse;
 import lab.zlren.security.core.properties.LoginType;
 import lab.zlren.security.core.properties.SecurityProperties;
 import lombok.extern.slf4j.Slf4j;

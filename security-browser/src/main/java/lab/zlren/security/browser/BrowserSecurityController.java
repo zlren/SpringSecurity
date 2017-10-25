@@ -1,6 +1,6 @@
 package lab.zlren.security.browser;
 
-import lab.zlren.security.browser.support.SimpleResponse;
+import lab.zlren.security.core.support.SimpleResponse;
 import lab.zlren.security.browser.support.SocialUserInfo;
 import lab.zlren.security.core.properties.SecurityProperties;
 import lombok.extern.slf4j.Slf4j;

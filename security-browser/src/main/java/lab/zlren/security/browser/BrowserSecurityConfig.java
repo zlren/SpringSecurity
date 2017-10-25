@@ -9,14 +9,14 @@ import lab.zlren.security.core.properties.SecurityProperties;
 import lab.zlren.security.core.validate.code.ValidateCodeFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.social.security.SpringSocialConfigurer;
@@ -52,12 +52,8 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private MyAuthFailureHandler myAuthFailureHandler;
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
     @Autowired
+    @Qualifier("prodDataSource")
     private DataSource dataSource;
 
     @Autowired
@@ -68,6 +64,9 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private SpringSocialConfigurer mySpringSocialConfig;
+
+    @Autowired
+    private LogoutSuccessHandler logoutSuccessHandler;
 
     @Bean
     public PersistentTokenRepository persistentTokenRepository() {
@@ -124,11 +123,19 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
                 .invalidSessionUrl("/session/invalid")
                 // 并发控制
                 .maximumSessions(1)
-                // session数量达到最大的时候组织掉继续登录的行为
-                .maxSessionsPreventsLogin(true)
-                .expiredSessionStrategy(new MyExpiredSessionStrategy()).and()
+                // session数量达到最大的时候阻止掉继续登录的行为
+                // .maxSessionsPreventsLogin(true)
+                .expiredSessionStrategy(new MyExpiredSessionStrategy()).and().and()
 
-                .and().authorizeRequests()
+                // 退出登录相关配置
+                .logout()
+                .logoutUrl("/signout")
+                // logoutSuccessUrl和handler只能二选一，他们是互斥的
+                // .logoutSuccessUrl("/demo-logout.html")
+                .logoutSuccessHandler(logoutSuccessHandler)
+                .deleteCookies("JSESSIONID").and()
+
+                .authorizeRequests()
                 // 登录页面其实指向了controller，如果ss需要验证就转到controller上，再由controller决定转到页面还是返回json
                 .antMatchers(
                         "/auth/require",
@@ -136,7 +143,8 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/code/*",
                         securityProperties.getBrowser().getSignUpUrl(),
                         "/user/regist",
-                        "/session/invalid"
+                        "/session/invalid",
+                        securityProperties.getBrowser().getSignOutUrl()
                 ).permitAll()
                 .anyRequest()
                 .authenticated()
